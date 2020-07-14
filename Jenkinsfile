@@ -75,9 +75,9 @@ node
          sh "exit 1"
       }
    }
-   stage('Deploy Code To Producion')
+   stage('start attendence CD job')
    {
-      echo "Build another Job"
+      echo "Build attendence CD Job"
       build job: 'attendance_prod', propagate: false, wait: false
    }
 
