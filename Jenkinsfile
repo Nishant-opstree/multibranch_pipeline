@@ -19,4 +19,70 @@ node
          sh "exit 1"
       }
    }
+   stage('Create Test Infrastructure')
+   {
+      try
+      {
+         echo "Creating test infrastructure for attendance and mysql"
+      }
+      catch (err)
+      {
+         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
+         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         sh "exit 1"
+      }
+   }
+   stage('Download attendance_deploy_role and mysql_role')
+   {
+      try
+      {
+         echo "attendance_deploy_role and mysql_role"
+      }
+      catch (err)
+      {
+         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
+         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         sh "exit 1"
+      }
+   }
+   stage('Deploy Attendance app to test Infrastructure and Configure Mysql Creds')
+   {
+      try
+      {
+         echo "Deploying Attendance and mysql code"
+      }
+      catch (err)
+      {
+         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
+         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         sh "exit 1"
+      }
+   }
+   stage('Test Atttendance Application')
+   {
+      try
+      {
+         echo "Testing code"
+      }
+      catch (err)
+      {
+         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
+         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         sh "exit 1"
+      }
+   }
+   stage('Deploy Code To Producion')
+   {
+      try
+      {
+         echo "Build another Job"
+      }
+      catch (err)
+      {
+         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
+         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         sh "exit 1"
+      }
+   }
+
 }
