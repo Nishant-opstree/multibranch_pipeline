@@ -8,11 +8,6 @@ node
    stage ('Conformation to start the Job')
    {
       input message: '', parameters: [booleanParam(defaultValue: false, description: 'Confirm if you wish to start the job', name: 'start_job')]
-      if ( $start_job == false )
-      {
-         currentBuild.result = 'SUCCESS'
-         return
-      }
    }
    stage('Cloning stage') 
    {
