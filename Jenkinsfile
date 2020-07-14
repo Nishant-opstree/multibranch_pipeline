@@ -5,6 +5,10 @@ def emailNotification (String developerEmail, String emailSubject='', String ema
 
 node 
 {
+   stage ('Conformation to start the Job')
+   {
+      input message: '', parameters: [booleanParam(defaultValue: false, description: 'Confirm if you wish to start the job', name: 'start_job')]
+   }
    stage('Cloning stage') 
    {
    	try
@@ -73,16 +77,8 @@ node
    }
    stage('Deploy Code To Producion')
    {
-      try
-      {
-         echo "Build another Job"
-      }
-      catch (err)
-      {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
-         sh "exit 1"
-      }
+      echo "Build another Job"
+      build job: 'attendance_prod', propagate: false, wait: false
    }
 
 }
