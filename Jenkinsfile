@@ -1,6 +1,6 @@
 def emailNotification (String developerEmail, String emailSubject='', String emailBody='', String attachments = '')
 {
-    emailext attachLog: true, attachmentsPattern: "$attachments", body: "$emailBody", subject: "$emailSubject", to: "$developerEmail"
+   emailext attachLog: true, attachmentsPattern: "$attachments", body: "$emailBody", subject: "$emailSubject", to: "$developerEmail"
 }
 
 node 
@@ -8,6 +8,8 @@ node
    stage ('Conformation to start the Job')
    {
       input message: '', parameters: [booleanParam(defaultValue: false, description: 'Check the if box you wish to create infrastructure for the job first', name: 'start_job')]
+      //build job: '/infra_multibranch/arc_test', propagate: false, wait: false
+
    }
    stage('Clone src code') 
    {
@@ -28,6 +30,7 @@ node
       try
       {
          echo "Cloning attendance_deploy_role and mysql_role"
+         git branch: 'attendance', credentialsId: 'nishant_github_account', url: 'https://github.com/Nishant-opstree/roles.git'
       }
       catch (err)
       {
