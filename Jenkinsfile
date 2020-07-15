@@ -9,7 +9,21 @@ node
    {
       input message: '', parameters: [booleanParam(defaultValue: false, description: 'Confirm if you wish to start the job', name: 'start_job')]
    }
-   stage('Cloning stage') 
+   stage('Cloning src code') 
+   {
+   	try
+      {
+         echo "Cloning code for attendence from remote repo"
+         git credentialsId: 'nishant_github_account', url: 'https://github.com/Nishant-opstree/ot-microservices.git'
+      }
+      catch (err)
+      {
+         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
+         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         sh "exit 1"
+      }
+   }
+   stage('Cloning terraform code') 
    {
    	try
       {
