@@ -92,7 +92,7 @@ node
    stage('start attendence CD job')
    {
       echo "Build attendence CD Job"
-      build job: 'prod_attendance', propagate: false, wait: false
+      build job: '/cd_multibranch/prod_attendance', propagate: false, wait: false
    }
 
 }
