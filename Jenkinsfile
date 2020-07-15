@@ -57,7 +57,7 @@ node
       try
       {
          echo "Updating Inventory"
-         sh "bash src/create_inventory.sh test-service /home/path"
+         sh "bash create_inventory.sh test-service /home/path"
       }
       catch (err)
       {
