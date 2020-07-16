@@ -13,11 +13,10 @@ node
    def role_repo = 'https://github.com/Nishant-opstree/roles.git'
    if ( """${create_infra}""" == true)
    {
-        stage ('Confirmation to start the Job')
+        stage ('Conformation to start the Job')
         {
-            echo """${create_infra}"""
-            //build job: '/infra_multibranch/arc_test', propagate: false, wait: false
-        }
+      	    build 'ci_infra/infra_test_attendance'
+	     }
 
    }
    stage('Clone src code')
@@ -31,8 +30,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -49,8 +47,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'The attendance_deploy_role and mysql_role Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -66,8 +63,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'Role was not updated', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -84,8 +80,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'Application cannot be checked in remote host', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -110,8 +105,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'The code Was Not able get deployed', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -125,8 +119,7 @@ node
       {
          //restore backup
          
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'Test was un successful', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
