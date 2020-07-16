@@ -10,13 +10,14 @@ node
    //def props = readProperties  file: """${configFilePath}"""
    def create_infra = input message: '', parameters: [booleanParam(defaultValue: false, description: 'Check the if box you wish to create infrastructure for the job first', name: 'create_infra')]
    def src_code ='https://github.com/Nishant-opstree/ot-microservices.git'
+   def developerEmail = 'nishant.prakash@opstree.com'
    def role_repo = 'https://github.com/Nishant-opstree/roles.git'
    if ( """${create_infra}""" == true)
    {
         stage ('Conformation to start the Job')
         {
       	    build 'ci_infra/infra_test_attendance'
-	}
+	      }
 
    }
    stage('Clone src code')
@@ -30,8 +31,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -48,8 +48,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'The attendance_deploy_role and mysql_role Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -59,14 +58,13 @@ node
       {
          echo "Updating attendance_deploy_role"
          sh '''
-         mysql_ip=$(python dynamic-inventory.py mysql)
+         mysql_ip=$(python dynamic-inventory.py test_mysql)
          sed -i "/host:/s/mysql/$mysql_ip/" attendence_deploy_role/files/attendance/config.yaml
          '''
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'Role was not updated', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -75,7 +73,7 @@ node
    {
       try
       {
-        def host_tag     = "attendance"
+        def host_tag     = "test_attendance"
         def key_path = "~/.jenkins/ec2-linux-public-01.pem"
         def service_name = "attendance"
         echo "Checking If application Present in Host'"
@@ -83,8 +81,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'Application cannot be checked in remote host', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -96,12 +93,12 @@ node
          def key_path = "~/.jenkins/ec2-linux-public-01.pem"
          sh """
          key_path=${key_path}
-         bash create_inventory.sh attendance ${key_path}
+         bash create_inventory.sh test_attendance ${key_path}
          ansible-playbook -i inventory deploy_attendance.yml
          rm inventory
          if [ ${create_infra} == true ]
          then
-            bash create_inventory.sh mysql ${key_path}
+            bash create_inventory.sh test_mysql ${key_path}
             ansible-playbook -i inventory deploy_mysql.yml
             rm inventory
          fi
@@ -109,8 +106,7 @@ node
       }
       catch (err)
       {
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'The code Was Not able get deployed', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
@@ -124,8 +120,7 @@ node
       {
          //restore backup
          
-         emailNotification ( props['DEVELOPEREMAIL'], 'The code Was Not able to get cloned', 'Build-URL: "${BUILD_URL}"' )
-         //slackNotification ( props['SLACKCHANNELDEVELOPER'], 'The cloning of project was not successful Build-URL: "${BUILD_URL}" ')
+         emailNotification ( """${developerEmail}""", 'Test was un successful', 'Build-URL: "${BUILD_URL}"' )
          sh "exit 1"
       }
    }
