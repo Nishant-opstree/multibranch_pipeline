@@ -15,9 +15,8 @@ node
    {
         stage ('Conformation to start the Job')
         {
-            echo """${create_infra}"""
-            //build job: '/infra_multibranch/arc_test', propagate: false, wait: false
-        }
+      	    build 'ci_infra/infra_test_attendance'
+	}
 
    }
    stage('Clone src code')
