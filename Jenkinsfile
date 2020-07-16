@@ -1,7 +1,7 @@
 node
 {
    def terraform_code ='https://github.com/Nishant-opstree/terraform.git'
-   def test_application = input message: '', parameters: [string(defaultValue: '', description: '', name: 'test_application', trim: false)]
+   def test_application = 'test_attendance' 
    stage('Clone terraform code')
    {
    	try
